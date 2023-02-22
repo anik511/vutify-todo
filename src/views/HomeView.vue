@@ -75,15 +75,14 @@
                     ></v-checkbox>
                   </v-list-item-action>
 
-                  <v-list-item-content
-                    :class="{
-                      'text-decoration-line-through text--disabled':
-                        task.completed,
-                    }"
-                  >
-                    <v-list-item-title>{{ task.title }}</v-list-item-title>
-                    <v-list-item-subtitle
+                  <v-list-item-content>
+                    <v-list-item-title :class="{'text-decoration-line-through text--disabled':task.completed,}">
+                      {{ task.title }}</v-list-item-title>
+                    <v-list-item-subtitle :class="{'text-decoration-line-through text--disabled':task.completed,}"
                       v-html="task.description || 'No description'"
+                    ></v-list-item-subtitle>
+                    <v-list-item-subtitle
+                      v-html="task.dateTime || ''"
                     ></v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-action>
@@ -137,13 +136,35 @@ export default {
       }
     },
     submitTask() {
-      console.log('sad', this.newTask);
+      function getDateTime() {
+        // Get current date and time
+        const now = new Date();
+
+        // Get day, month, year
+        const day = now.getDate().toString().padStart(2, '0');
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const year = now.getFullYear().toString();
+
+        // Get hours and minutes
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+
+        // Convert to 12-hour format and add AM/PM
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        minutes = minutes.toString().padStart(2, '0');
+
+        // Combine all parts into the desired format
+        return `${day}-${month}-${year} ${hours}:${minutes} ${ampm}`;
+      }
       if (this.newTask != '') {
         let tasks = {
-          id: this.tasks[this.tasks.length - 1].id + 1,
+          id: this.tasks.length + 1,
           title: this.newTask,
           description: this.description,
           completed: false,
+          dateTime: getDateTime(),
         };
         //dispatch addTask
         this.addTask(tasks);

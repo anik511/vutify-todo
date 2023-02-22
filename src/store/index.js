@@ -11,18 +11,21 @@ export default new Vuex.Store({
         title: 'Task 1',
         description: 'Description 1',
         completed: false,
+        dateTime: '12-02-2023 09:36 am'
       },
       {
         id: 2,
         title: 'Task 2',
         description: 'Description 2',
         completed: true,
+        dateTime: '12-02-2023 10:36 am'
       },
       {
         id: 3,
         title: 'Task 3',
         description: 'Description 3',
         completed: false,
+        dateTime: '11-02-2023 10:36 am'
       },
     ],
     snackbar: {
