@@ -35,7 +35,7 @@
         </v-text-field>
       </transition>
       <transition name="text-editor">
-        <vue-editor v-if="editorOpen" class="pa-3" v-model="description" />
+        <VueEditor name="Alice" v-if="editorOpen" class="pa-3" v-model="description"/>
       </transition>
       <transition name="add-close">
         <div class="text-center" v-if="textFildVisible">
@@ -111,12 +111,14 @@
 </template>
 
 <script>
-import { VueEditor } from 'vue2-editor';
+// import { VueEditor } from "vue2-editor";
 import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
-  components: { VueEditor },
+  // components: {
+  //   VueEditor
+  // },
   data() {
     return {
       newTask: '',
@@ -127,6 +129,9 @@ export default {
   },
   computed: {
     ...mapState(['tasks']),
+  },
+  mounted(){
+    this.getInitialTasks()
   },
   methods: {
     visibleIt() {
@@ -167,11 +172,17 @@ export default {
           dateTime: getDateTime(),
         };
         //dispatch addTask
-        this.addTask(tasks);
-        this.newTask = '';
-        this.description = '';
-        this.textFildVisible = false;
-        this.editorOpen = false;
+        this.addTask(tasks).then(() => {
+          console.log('Sucesses')
+          this.newTask = '';
+          this.description = '';
+          this.textFildVisible = false;
+          this.editorOpen = false;
+        })
+        .catch(e => {
+          console.log('Failed to submit !!!', e)
+        })
+        
       }
     },
     addDescription() {
@@ -183,7 +194,15 @@ export default {
     removeTask(id) {
       this.deleteTask(id);
     },
-    ...mapActions(['addTask', 'deleteTask', 'doneTask']),
+    getInitialTasks(){
+      this.getTasks().then(() => {
+          console.log('Sucesses',)
+        })
+        .catch(e => {
+          console.log('Failed to get !!!', e)
+        })
+    },
+    ...mapActions(['addTask', 'deleteTask', 'doneTask', 'getTasks']),
   },
 };
 </script>
