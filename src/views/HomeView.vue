@@ -34,8 +34,9 @@
           </template>
         </v-text-field>
       </transition>
+      <p v-html="description"></p>
       <transition name="text-editor">
-        <VueEditor name="Alice" v-if="editorOpen" class="pa-3" v-model="description"/>
+        <vue-editor v-if="editorOpen" class="pa-3" v-model="description"></vue-editor>
       </transition>
       <transition name="add-close">
         <div class="text-center" v-if="textFildVisible">
@@ -111,14 +112,14 @@
 </template>
 
 <script>
-// import { VueEditor } from "vue2-editor";
+import { VueEditor } from 'vue2-editor';
 import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
-  // components: {
-  //   VueEditor
-  // },
+  components: {
+     VueEditor
+   },
   data() {
     return {
       newTask: '',
